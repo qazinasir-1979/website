@@ -25,20 +25,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contact form submission handle
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Just a UI demo
+            
             const btn = contactForm.querySelector('button');
             const originalText = btn.textContent;
             
-            btn.textContent = 'Message Sent!';
-            btn.style.backgroundColor = '#10b981'; // Green color for success
-            
-            contactForm.reset();
-            
+            // Add loading state
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch("https://formsubmit.co/ajax/contact@qazinasir.com", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        message: document.getElementById('message').value
+                    })
+                });
+
+                if (response.ok) {
+                    btn.textContent = 'Message Sent!';
+                    btn.style.backgroundColor = '#10b981'; // Green color for success
+                    contactForm.reset();
+                } else {
+                    btn.textContent = 'Error Sending';
+                    btn.style.backgroundColor = '#ef4444'; // Red color for error
+                }
+            } catch (error) {
+                console.error("Error sending form:", error);
+                btn.textContent = 'Error Sending';
+                btn.style.backgroundColor = '#ef4444';
+            }
+
+            // Reset button after 3 seconds
             setTimeout(() => {
                 btn.textContent = originalText;
-                btn.style.backgroundColor = ''; // Reset to default CSS
+                btn.style.backgroundColor = '';
+                btn.disabled = false;
             }, 3000);
         });
     }
