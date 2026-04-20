@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Comprehensive validation for blog posts
+    function isValidPost(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.slug is string && data.slug.size() <= 200 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.dateStr is string && data.dateStr.size() <= 100 &&
+             data.author is string && data.author.size() <= 100 &&
+             data.excerpt is string && data.excerpt.size() <= 1000 &&
+             data.content is string && data.content.size() <= 1000000;
+    }
+
+    match /posts/{postId} {
+      // Publicly readable
+      allow read: if true;
+
+      // Only auth'd admin can write
+      allow create, update: if isSignedIn() && isValidPost(request.resource.data);
+      allow delete: if isSignedIn();
+    }
+  }
+}

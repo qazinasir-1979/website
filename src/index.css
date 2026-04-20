@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-bg-main: #fafafe;
+  --color-text-main: #111827;
+  --color-text-muted: #4b5563;
+  --color-border-main: #e5e7eb;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-main text-text-main font-sans;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-block bg-primary text-white px-6 py-3 rounded-md font-medium transition-all hover:bg-primary-hover hover:-translate-y-px cursor-pointer;
+  }
+  
+  .btn-outline {
+    @apply bg-transparent text-text-main border border-border-main hover:bg-bg-main hover:text-primary;
+  }
+
+  .blog-card {
+    @apply bg-white rounded-xl border border-border-main p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md;
+  }
+
+  .container {
+    @apply w-full max-w-3xl mx-auto px-5;
+  }
+
+  /* Advanced Editor Styles */
+  .quill-editor-wrapper .ql-toolbar.ql-snow {
+    @apply border-none bg-gray-50 border-b border-border-main;
+  }
+  
+  .quill-editor-wrapper .ql-container.ql-snow {
+    @apply border-none text-base;
+  }
+
+  .quill-editor-wrapper .ql-editor {
+    @apply min-h-[400px] p-6 leading-relaxed;
+  }
+
+  /* Style images inside the editor and post content */
+  .prose img, .ql-editor img {
+    @apply max-w-full h-auto rounded-lg shadow-sm my-6 block mx-auto;
+  }
+}

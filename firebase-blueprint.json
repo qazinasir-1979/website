@@ -1,0 +1,27 @@
+{
+  "entities": {
+    "Post": {
+      "title": "Post",
+      "description": "A blog post entry.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Display title of the post" },
+        "slug": { "type": "string", "description": "URL slug" },
+        "category": { "type": "string", "description": "Post category" },
+        "dateStr": { "type": "string", "description": "Formatted date string" },
+        "author": { "type": "string", "description": "Author name" },
+        "excerpt": { "type": "string", "description": "Short bio/excerpt for links" },
+        "content": { "type": "string", "description": "HTML content or markdown" },
+        "createdAt": { "type": "object", "format": "google-firestore-timestamp" },
+        "updatedAt": { "type": "object", "format": "google-firestore-timestamp" }
+      },
+      "required": ["title", "slug", "content"]
+    }
+  },
+  "firestore": {
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Collection of all blog posts."
+    }
+  }
+}
